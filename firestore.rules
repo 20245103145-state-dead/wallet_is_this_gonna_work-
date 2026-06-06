@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Match any document in the 'users' collection
+    match /users/{userId} {
+      /**
+       * [EDUCATIONAL COMMENT]
+       * Data Security & Isolation:
+       * The `request.auth.uid == userId` rule ensures that a user can only read and write 
+       * to their own document and subcollections. This prevents unauthorized access to other users' data.
+       */
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Match transactions subcollection
+      match /transactions/{transactionId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      // Match goals subcollection
+      match /goals/{goalId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}
