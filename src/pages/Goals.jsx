@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { C, CAT_COLORS } from "../constants/colors";
+import { Target } from "lucide-react";
 import { useTransactions } from "../context/TransactionContext";
 import GoalCard from "../components/GoalCard";
 import { CURRENCY_SYMBOLS } from "../utils/currency";
@@ -30,7 +31,7 @@ export default function Goals({ toast, user }) {
 
             {goals.length === 0 && (
                 <div style={{ textAlign: "center", padding: "4rem", color: C.muted }}>
-                    <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🎯</div>
+                    <div style={{ marginBottom: "1rem" }}><Target size={48} color={C.primary} /></div>
                     <p>No savings goals yet. Create your first one!</p>
                 </div>
             )}

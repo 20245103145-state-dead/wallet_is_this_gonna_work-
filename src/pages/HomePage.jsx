@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BarChart3, Wallet, Target, Globe, BellRing, Download, Rocket, Twitter, Facebook, Linkedin, Youtube } from "lucide-react";
+import { BarChart3, Wallet, Target, Globe, BellRing, Download, Rocket, Twitter, Facebook, Linkedin, Youtube, Star, ChevronDown, ArrowRight } from "lucide-react";
 import { C } from "../constants/colors";
 
 export default function HomePage({ onNav }) {
@@ -63,9 +63,9 @@ export default function HomePage({ onNav }) {
     };
 
     const testimonials = [
-        { stars: "★★★★★", text: "My Wallet transformed how I manage my salary. The budget alerts literally saved me from overspending three months in a row.", name: "Rahim Chowdhury", role: "Software Engineer, Dhaka", color: "#45298d" },
-        { stars: "★★★★★", text: "As a freelancer with irregular income, the analytics page showing income trends is absolutely indispensable for my planning.", name: "Sumaiya Akter", role: "Graphic Designer, Chittagong", color: "#de98c9" },
-        { stars: "★★★★☆", text: "Clean interface, powerful features. I especially love the savings goals — finally hit my Eid shopping goal last year!", name: "Tanvir Hossain", role: "University Student, BUET", color: "#7b5cbf" },
+        { stars: <div style={{ display: "flex", gap: "2px", color: "#f5c842", marginBottom: ".5rem" }}>{[1,2,3,4,5].map(i => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}</div>, text: "My Wallet transformed how I manage my salary. The budget alerts literally saved me from overspending three months in a row.", name: "Rahim Chowdhury", role: "Software Engineer, Dhaka", color: "#45298d" },
+        { stars: <div style={{ display: "flex", gap: "2px", color: "#f5c842", marginBottom: ".5rem" }}>{[1,2,3,4,5].map(i => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}</div>, text: "As a freelancer with irregular income, the analytics page showing income trends is absolutely indispensable for my planning.", name: "Sumaiya Akter", role: "Graphic Designer, Chittagong", color: "#de98c9" },
+        { stars: <div style={{ display: "flex", gap: "2px", color: "#f5c842", marginBottom: ".5rem" }}>{[1,2,3,4].map(i => <Star key={i} size={16} fill="currentColor" strokeWidth={0} />)}<Star size={16} color="#f5c842" strokeWidth={2} /></div>, text: "Clean interface, powerful features. I especially love the savings goals — finally hit my Eid shopping goal last year!", name: "Tanvir Hossain", role: "University Student, BUET", color: "#7b5cbf" },
     ];
 
     const barHeights = [40, 65, 45, 80, 55, 70, 90, 60, 75, 85, 50, 95];
@@ -147,7 +147,7 @@ export default function HomePage({ onNav }) {
                     <div className="pricing-grid">
                         {plans[pricingTab].map(p => (
                             <div key={p.name} className={`pricing-card reveal ${p.popular ? "popular" : ""}`}>
-                                {p.popular && <div className="pricing-badge">⭐ Most Popular</div>}
+                                {p.popular && <div className="pricing-badge"><Star size={14} fill="currentColor" style={{ marginRight: '4px' }} /> Most Popular</div>}
                                 <div className="pricing-plan">{p.name}</div>
                                 <div className="pricing-price">{p.price}</div>
                                 <div className="pricing-period">{p.period}</div>
@@ -200,7 +200,7 @@ export default function HomePage({ onNav }) {
                             <div key={i} className="faq-item">
                                 <div className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
                                     {f.q}
-                                    <span className="faq-chevron" style={{ transform: openFaq === i ? "rotate(180deg)" : "none" }}>▾</span>
+                                    <ChevronDown size={18} className="faq-chevron" style={{ transform: openFaq === i ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
                                 </div>
                                 <div className={`faq-a ${openFaq === i ? "open" : ""}`}>
                                     <div className="faq-a-inner">{f.a}</div>
@@ -217,7 +217,7 @@ export default function HomePage({ onNav }) {
                     <div style={{ color: "#fff" }}>
                         <h2 style={{ fontSize: "2.5rem", fontFamily: "Inter,sans-serif", fontWeight: 800, marginBottom: "1rem" }}>Ready to Own Your Finances?</h2>
                         <p style={{ color: "rgba(239,229,254,.7)", maxWidth: "520px", margin: "0 auto 2rem", lineHeight: 1.7 }}>Join thousands of users who made smarter financial decisions with My Wallet. Start for free today.</p>
-                        <button className="btn btn-pink btn-lg" onClick={() => onNav("signup")}>Create Free Account →</button>
+                        <button className="btn btn-pink btn-lg" onClick={() => onNav("signup")}>Create Free Account <ArrowRight size={18} style={{ marginLeft: "4px" }} /></button>
                     </div>
                 </div>
             </section>

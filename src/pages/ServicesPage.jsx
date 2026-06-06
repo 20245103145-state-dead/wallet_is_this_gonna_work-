@@ -1,16 +1,17 @@
 import { C } from "../constants/colors";
+import { BarChart3, Wallet, Target, TrendingUp, Globe, Download, Bell, Lock, Smartphone, ArrowRight } from "lucide-react";
 
 export default function ServicesPage({ onNav }) {
     const services = [
-        { icon: "📊", title: "Transaction Management", desc: "Record income and expenses with rich categorization, notes, date-tracking, and multi-currency support.", tag: "Core" },
-        { icon: "💰", title: "Budget Planning", desc: "Set monthly budgets, monitor real-time spending, and receive intelligent alerts before you overspend.", tag: "Core" },
-        { icon: "🎯", title: "Savings Goals", desc: "Define up to 10 financial goals, track contributions, and celebrate milestones automatically.", tag: "Pro" },
-        { icon: "📈", title: "Financial Analytics", desc: "Comprehensive charts showing income trends, expense breakdowns, and category-level insights.", tag: "Pro" },
-        { icon: "💱", title: "Multi-Currency", desc: "Support for BDT, USD, EUR, GBP, AED, and INR with automatic base-currency conversion.", tag: "Pro" },
-        { icon: "📥", title: "CSV Export", desc: "Download your complete transaction history and financial reports as CSV files for offline analysis.", tag: "Pro" },
-        { icon: "🔔", title: "Smart Notifications", desc: "Budget alerts, milestone reminders, and spending insights delivered in real-time to your dashboard.", tag: "Core" },
-        { icon: "🔐", title: "Bank-Level Security", desc: "AES-256 encryption, bcrypt password hashing, and secure session management for all accounts.", tag: "Core" },
-        { icon: "📱", title: "Responsive Design", desc: "Full access on desktop, tablet, and mobile browsers with an optimized touch-friendly interface.", tag: "Core" },
+        { icon: <BarChart3 size={24} color={C.primary} />, title: "Transaction Management", desc: "Record income and expenses with rich categorization, notes, date-tracking, and multi-currency support.", tag: "Core" },
+        { icon: <Wallet size={24} color={C.primary} />, title: "Budget Planning", desc: "Set monthly budgets, monitor real-time spending, and receive intelligent alerts before you overspend.", tag: "Core" },
+        { icon: <Target size={24} color={C.primary} />, title: "Savings Goals", desc: "Define up to 10 financial goals, track contributions, and celebrate milestones automatically.", tag: "Pro" },
+        { icon: <TrendingUp size={24} color={C.primary} />, title: "Financial Analytics", desc: "Comprehensive charts showing income trends, expense breakdowns, and category-level insights.", tag: "Pro" },
+        { icon: <Globe size={24} color={C.primary} />, title: "Multi-Currency", desc: "Support for BDT, USD, EUR, GBP, AED, and INR with automatic base-currency conversion.", tag: "Pro" },
+        { icon: <Download size={24} color={C.primary} />, title: "CSV Export", desc: "Download your complete transaction history and financial reports as CSV files for offline analysis.", tag: "Pro" },
+        { icon: <Bell size={24} color={C.primary} />, title: "Smart Notifications", desc: "Budget alerts, milestone reminders, and spending insights delivered in real-time to your dashboard.", tag: "Core" },
+        { icon: <Lock size={24} color={C.primary} />, title: "Bank-Level Security", desc: "AES-256 encryption, bcrypt password hashing, and secure session management for all accounts.", tag: "Core" },
+        { icon: <Smartphone size={24} color={C.primary} />, title: "Responsive Design", desc: "Full access on desktop, tablet, and mobile browsers with an optimized touch-friendly interface.", tag: "Core" },
     ];
 
     return (
@@ -38,7 +39,7 @@ export default function ServicesPage({ onNav }) {
                         ))}
                     </div>
                     <div style={{ textAlign: "center", marginTop: "3rem" }}>
-                        <button className="btn btn-primary btn-lg" onClick={() => onNav("signup")}>Get Started Free →</button>
+                        <button className="btn btn-primary btn-lg" onClick={() => onNav("signup")}>Get Started Free <ArrowRight size={18} style={{ marginLeft: "4px" }} /></button>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,8 @@ import {
     AlertTriangle,
     Plus,
     Moon,
-    Sun
+    Sun,
+    Sparkles
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import { C, CAT_COLORS } from "../constants/colors";
@@ -218,7 +219,7 @@ function DashHome({ last20, totalIncome, totalExpense, balance, budget, budgetUs
     return (
         <>
             <div className="dash-welcome">
-                <h2>Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, {(user?.name || "User").split(" ")[0]}! <span style={{ fontSize: "1.2em", display: "inline-block", animation: "pulse 2s infinite" }}>👋</span></h2>
+                <h2>Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, {(user?.name || "User").split(" ")[0]}! <Sparkles size={24} color="var(--accent)" style={{ display: "inline-block", animation: "pulse 2s infinite", marginLeft: "6px" }} /></h2>
                 <p>Here's your financial snapshot for {new Date().toLocaleString("en-BD", { month: "long", year: "numeric" })}</p>
             </div>
 
