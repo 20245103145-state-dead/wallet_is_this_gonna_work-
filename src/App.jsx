@@ -1,8 +1,9 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
 import { C } from "./constants/colors";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import { ArrowUp } from "lucide-react";
 
 import Navbar from "./components/Navbar";
 
@@ -28,6 +29,32 @@ export default function App() {
     const { user, loading } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+
+    const [showScrollTop, setShowScrollTop] = useState(false);
+
+    useEffect(() => {
+        const onScroll = () => setShowScrollTop(window.scrollY > 400);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    useEffect(() => {
+        const obs = new IntersectionObserver(
+            entries => entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            }), { threshold: 0.1 }
+        );
+        
+        // Slight delay to ensure DOM is rendered, especially for Suspense elements
+        const timeoutId = setTimeout(() => {
+            document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+        }, 100);
+
+        return () => {
+            clearTimeout(timeoutId);
+            obs.disconnect();
+        };
+    }, [location.pathname]);
 
     // Shim for existing toast calls in components
     const customToast = (msg, type = "info") => {
@@ -86,6 +113,13 @@ export default function App() {
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
             </Suspense>
+            {showScrollTop && (
+                <button className="scroll-top-btn"
+                    onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
+                    aria-label="Back to top">
+                    <ArrowUp size={20} />
+                </button>
+            )}
             <Toaster position="bottom-right" toastOptions={{ style: { borderRadius: '14px', background: '#333', color: '#fff' } }} />
         </div>
     );

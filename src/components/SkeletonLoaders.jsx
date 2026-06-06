@@ -2,7 +2,7 @@ import React from 'react';
 
 export function SkeletonChart() {
     return (
-        <div style={{ height: "300px", width: "100%", background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)", backgroundSize: "200% 100%", animation: "skeleton-loading 1.5s infinite", borderRadius: "12px" }}>
+        <div style={{ height: "300px", width: "100%", background: "linear-gradient(90deg, var(--skel-base) 25%, var(--skel-shine) 50%, var(--skel-base) 75%)", backgroundSize: "200% 100%", animation: "skeleton-loading 1.5s infinite", borderRadius: "12px" }}>
             <style>{`
                 @keyframes skeleton-loading {
                     0% { background-position: 200% 0; }
@@ -20,7 +20,7 @@ export function SkeletonTable({ rows = 5 }) {
                 <div key={i} style={{ 
                     height: "40px", 
                     width: "100%", 
-                    background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)", 
+                    background: "linear-gradient(90deg, var(--skel-base) 25%, var(--skel-shine) 50%, var(--skel-base) 75%)", 
                     backgroundSize: "200% 100%", 
                     animation: "skeleton-loading 1.5s infinite", 
                     borderRadius: "8px", 

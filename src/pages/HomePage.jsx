@@ -1,10 +1,30 @@
 import { useState } from "react";
-import { BarChart3, Wallet, Target, Globe, BellRing, Download, Rocket } from "lucide-react";
+import { BarChart3, Wallet, Target, Globe, BellRing, Download, Rocket, Twitter, Facebook, Linkedin, Youtube } from "lucide-react";
 import { C } from "../constants/colors";
 
 export default function HomePage({ onNav }) {
     const [openFaq, setOpenFaq] = useState(null);
     const [pricingTab, setPricingTab] = useState("monthly");
+
+    const handleFooterLink = (e, l) => {
+        e.preventDefault();
+        const map = {
+            "Features": () => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }),
+            "Pricing": () => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" }),
+            "About": () => document.getElementById("home")?.scrollIntoView({ behavior: "smooth" }),
+            "FAQ": () => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" }),
+            "Contact": () => onNav("contact"),
+            "Help Center": () => onNav("contact"),
+            "Report Bug": () => onNav("contact"),
+        };
+        
+        if (map[l]) {
+            map[l]();
+        } else {
+            // Since we don't have these pages yet, just go to top
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
 
     const features = [
         { icon: <BarChart3 size={24} />, title: "Smart Analytics", desc: "Visualize your income vs expenses with beautiful, interactive charts and trend analysis.", bg: "#efe5fe" },
@@ -101,7 +121,7 @@ export default function HomePage({ onNav }) {
                     </div>
                     <div className="features-grid">
                         {features.map(f => (
-                            <div key={f.title} className="feature-card">
+                            <div key={f.title} className="feature-card reveal">
                                 <div className="feature-icon" style={{ background: f.bg }}>{f.icon}</div>
                                 <div className="feature-title">{f.title}</div>
                                 <div className="feature-desc">{f.desc}</div>
@@ -126,7 +146,7 @@ export default function HomePage({ onNav }) {
                     </div>
                     <div className="pricing-grid">
                         {plans[pricingTab].map(p => (
-                            <div key={p.name} className={`pricing-card ${p.popular ? "popular" : ""}`}>
+                            <div key={p.name} className={`pricing-card reveal ${p.popular ? "popular" : ""}`}>
                                 {p.popular && <div className="pricing-badge">⭐ Most Popular</div>}
                                 <div className="pricing-plan">{p.name}</div>
                                 <div className="pricing-price">{p.price}</div>
@@ -152,7 +172,7 @@ export default function HomePage({ onNav }) {
                     </div>
                     <div className="testimonials-grid">
                         {testimonials.map(t => (
-                            <div key={t.name} className="testimonial-card">
+                            <div key={t.name} className="testimonial-card reveal">
                                 <div className="testimonial-stars">{t.stars}</div>
                                 <p className="testimonial-text">"{t.text}"</p>
                                 <div className="testimonial-author">
@@ -209,27 +229,34 @@ export default function HomePage({ onNav }) {
                         <div className="footer-logo">My<span>Wallet</span></div>
                         <p className="footer-desc">A smart personal finance management system built for the people of Bangladesh. Track, budget, and grow your wealth.</p>
                         <div style={{ display: "flex", gap: ".75rem" }}>
-                            {["𝕏", "fb", "in", "yt"].map(s => (
-                                <div key={s} style={{ width: 34, height: 34, borderRadius: "50%", background: "rgba(255,255,255,.1)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: ".8rem", color: "#fff" }}>{s}</div>
+                            {[
+                                { Icon: Twitter, url: "https://twitter.com/mywallet" },
+                                { Icon: Facebook, url: "https://facebook.com/mywallet" },
+                                { Icon: Linkedin, url: "https://linkedin.com/company/mywallet" },
+                                { Icon: Youtube, url: "https://youtube.com/mywallet" }
+                            ].map(({ Icon, url }, i) => (
+                                <a key={i} href={url} target="_blank" rel="noopener noreferrer" aria-label="social link" style={{ width: 34, height: 34, borderRadius: "10px", background: "rgba(255,255,255,.1)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", transition: ".2s", textDecoration: "none" }} onMouseOver={(e) => {e.currentTarget.style.background='rgba(255,255,255,.2)'; e.currentTarget.style.transform='translateY(-2px)'}} onMouseOut={(e) => {e.currentTarget.style.background='rgba(255,255,255,.1)'; e.currentTarget.style.transform='translateY(0)'}}>
+                                    <Icon size={16} />
+                                </a>
                             ))}
                         </div>
                     </div>
                     <div>
                         <div className="footer-heading">Product</div>
                         <ul className="footer-links">
-                            {["Features", "Pricing", "Changelog", "Roadmap"].map(l => <li key={l}><a onClick={() => onNav("services")}>{l}</a></li>)}
+                            {["Features", "Pricing", "Changelog", "Roadmap"].map(l => <li key={l}><a href="#" onClick={(e) => handleFooterLink(e, l)}>{l}</a></li>)}
                         </ul>
                     </div>
                     <div>
                         <div className="footer-heading">Company</div>
                         <ul className="footer-links">
-                            {["About", "Contact", "Privacy Policy", "Terms"].map(l => <li key={l}><a onClick={() => onNav(l === "Contact" ? "contact" : "home")}>{l}</a></li>)}
+                            {["About", "Contact", "Privacy Policy", "Terms"].map(l => <li key={l}><a href="#" onClick={(e) => handleFooterLink(e, l)}>{l}</a></li>)}
                         </ul>
                     </div>
                     <div>
                         <div className="footer-heading">Support</div>
                         <ul className="footer-links">
-                            {["Help Center", "FAQ", "Status", "Report Bug"].map(l => <li key={l}><a onClick={() => onNav("contact")}>{l}</a></li>)}
+                            {["Help Center", "FAQ", "Status", "Report Bug"].map(l => <li key={l}><a href="#" onClick={(e) => handleFooterLink(e, l)}>{l}</a></li>)}
                         </ul>
                     </div>
                 </div>

@@ -1,10 +1,17 @@
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { TrendingUp, TrendingDown, PiggyBank, Target } from "lucide-react";
 import { C, CAT_COLORS } from "../constants/colors";
 import { fmt } from "../utils/format";
 import { CURRENCY_SYMBOLS } from "../utils/currency";
+import { useCountUp } from "../hooks/useCountUp";
 
 export default function Analytics({ monthlyData, catTrend, topCatNames, catColors, pieData, range, setRange, totalIncome, totalExpense, user }) {
     const savingsRate = totalIncome > 0 ? Math.round(((totalIncome - totalExpense) / totalIncome) * 100) : 0;
+
+    const animIncome = useCountUp(totalIncome);
+    const animExpense = useCountUp(totalExpense);
+    const animSavings = useCountUp(totalIncome - totalExpense);
+    const animRate = useCountUp(savingsRate);
 
     return (
         <>
@@ -22,10 +29,10 @@ export default function Analytics({ monthlyData, catTrend, topCatNames, catColor
 
             <div className="stats-grid" style={{ marginBottom: "2rem" }}>
                 {[
-                    { label: "Total Income", value: fmt(totalIncome, user?.currency), icon: "📈", color: "#dcfce7" },
-                    { label: "Total Expense", value: fmt(totalExpense, user?.currency), icon: "📉", color: "#fee2e2" },
-                    { label: "Net Savings", value: fmt(totalIncome - totalExpense, user?.currency), icon: "💎", color: "#efe5fe" },
-                    { label: "Savings Rate", value: `${savingsRate}%`, icon: "🎯", color: "#fef3c7" },
+                    { label: "Total Income", value: fmt(animIncome, user?.currency), icon: <TrendingUp size={24} color={C.success} />, color: "#dcfce7" },
+                    { label: "Total Expense", value: fmt(animExpense, user?.currency), icon: <TrendingDown size={24} color={C.danger} />, color: "#fee2e2" },
+                    { label: "Net Savings", value: fmt(animSavings, user?.currency), icon: <PiggyBank size={24} color={C.primary} />, color: "#efe5fe" },
+                    { label: "Savings Rate", value: `${animRate}%`, icon: <Target size={24} color="#b45309" />, color: "#fef3c7" },
                 ].map(s => (
                     <div key={s.label} className="stat-card">
                         <div className="stat-icon" style={{ background: s.color }}>{s.icon}</div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Download, X } from "lucide-react";
+import { Download, Edit2, Trash2 } from "lucide-react";
 import { C, CAT_COLORS } from "../constants/colors";
 import { EXPENSE_CATS, INCOME_CATS } from "../constants/categories";
 import { fmt } from "../utils/format";
@@ -70,8 +70,11 @@ export default function Transactions({ filter, setFilter, toast, user }) {
                                     <td style={{ textAlign: "right", fontWeight: 600, color: t.type === "income" ? C.success : C.danger }}>
                                         {t.type === "income" ? "+" : "-"}{fmt(t.amount, user?.currency)}
                                     </td>
-                                    <td>
-                                        <button className="btn btn-danger btn-sm" onClick={() => handleDelete(t.id)} style={{ padding: ".25rem .5rem" }}><X size={14} /></button>
+                                    <td style={{ textAlign: "right" }}>
+                                        <div className="tx-actions" style={{ display: "flex", gap: ".5rem", justifyContent: "flex-end" }}>
+                                            <button className="btn btn-outline btn-sm" onClick={() => toast("Edit functionality coming soon!", "info")} style={{ padding: ".3rem", border: "none" }} aria-label="Edit"><Edit2 size={14} /></button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => handleDelete(t.id)} style={{ padding: ".3rem" }} aria-label="Delete"><Trash2 size={14} /></button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

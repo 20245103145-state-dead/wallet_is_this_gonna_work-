@@ -1,8 +1,16 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 
 export default function Navbar({ currentPage, onNav, user }) {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const [scrolled, setScrolled] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 40);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
@@ -12,12 +20,18 @@ export default function Navbar({ currentPage, onNav, user }) {
     const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
     return (
-        <nav className="nav">
+        <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-logo" onClick={() => onNav("home")}>My<span>Wallet</span></div>
-            <ul className="nav-links">
-                <li><a onClick={() => onNav("home")}>Home</a></li>
-                <li><a onClick={() => onNav("services")}>Services</a></li>
+            
+            <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+                {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+
+            <ul className={`nav-links ${menuOpen ? 'mobile-open' : ''}`}>
+                <li><a onClick={() => { setMenuOpen(false); onNav("home"); }}>Home</a></li>
+                <li><a onClick={() => { setMenuOpen(false); onNav("services"); }}>Services</a></li>
                 <li><a onClick={() => { 
+                    setMenuOpen(false);
                     if(currentPage !== "home") { 
                         onNav("home"); 
                         setTimeout(() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" }), 150); 
@@ -25,7 +39,7 @@ export default function Navbar({ currentPage, onNav, user }) {
                         document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" }); 
                     } 
                 }}>FAQ</a></li>
-                <li><a onClick={() => onNav("contact")}>Contact</a></li>
+                <li><a onClick={() => { setMenuOpen(false); onNav("contact"); }}>Contact</a></li>
             </ul>
             <div className="nav-cta">
                 <button className="btn btn-outline" style={{ padding: ".4rem", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }} onClick={toggleTheme} aria-label="Toggle dark mode">

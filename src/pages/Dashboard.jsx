@@ -11,7 +11,8 @@ import {
     Wallet, 
     TrendingUp, 
     TrendingDown, 
-    AlertTriangle 
+    AlertTriangle,
+    Plus
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import { C, CAT_COLORS } from "../constants/colors";
@@ -20,6 +21,7 @@ import { fmt } from "../utils/format";
 import { CURRENCY_SYMBOLS } from "../utils/currency";
 import { useAuth } from "../context/AuthContext";
 import { useTransactions } from "../context/TransactionContext";
+import { useCountUp } from "../hooks/useCountUp";
 
 import Sidebar from "../components/Sidebar";
 import AddTxModal from "../components/AddTransactionModal";
@@ -157,14 +159,20 @@ export default function Dashboard({ onNav, toast, page }) {
                 </div>
 
                 <div className="dash-body">
-                    {activeSection === "dashboard" && <DashHome last20={last20} totalIncome={totalIncome} totalExpense={totalExpense} balance={balance} budget={budget} budgetUsedPct={budgetUsedPct} pieData={pieData} monthlyData={monthlyData} user={user} onAddTx={() => setShowAddTx(true)} toast={toast} loading={loading} />}
-                    {activeSection === "transactions" && <Transactions filter={txFilter} setFilter={setTxFilter} toast={toast} user={user} />}
-                    {activeSection === "analytics" && <Analytics monthlyData={monthlyData} catTrend={catTrend} topCatNames={topCatNames} catColors={catColors} pieData={pieData} range={analyticsRange} setRange={setAnalyticsRange} totalIncome={totalIncome} totalExpense={totalExpense} user={user} />}
-                    {activeSection === "goals" && <Goals toast={toast} user={user} />}
-                    {activeSection === "budget" && <BudgetPage totalExpense={totalExpense} budgetUsedPct={budgetUsedPct} toast={toast} />}
-                    {activeSection === "ask-ai" && <AskAI />}
+                    <div key={activeSection} className="section-fade">
+                        {activeSection === "dashboard" && <DashHome last20={last20} totalIncome={totalIncome} totalExpense={totalExpense} balance={balance} budget={budget} budgetUsedPct={budgetUsedPct} pieData={pieData} monthlyData={monthlyData} user={user} onAddTx={() => setShowAddTx(true)} toast={toast} loading={loading} />}
+                        {activeSection === "transactions" && <Transactions filter={txFilter} setFilter={setTxFilter} toast={toast} user={user} />}
+                        {activeSection === "analytics" && <Analytics monthlyData={monthlyData} catTrend={catTrend} topCatNames={topCatNames} catColors={catColors} pieData={pieData} range={analyticsRange} setRange={setAnalyticsRange} totalIncome={totalIncome} totalExpense={totalExpense} user={user} />}
+                        {activeSection === "goals" && <Goals toast={toast} user={user} />}
+                        {activeSection === "budget" && <BudgetPage totalExpense={totalExpense} budgetUsedPct={budgetUsedPct} toast={toast} />}
+                        {activeSection === "ask-ai" && <AskAI />}
+                    </div>
                 </div>
             </div>
+
+            <button className="mobile-fab" onClick={() => setShowAddTx(true)} aria-label="Add transaction">
+                <Plus size={22} />
+            </button>
 
             {showAddTx && <AddTxModal onClose={() => setShowAddTx(false)} toast={toast} />}
             {showProfile && <ProfileModal onClose={() => setShowProfile(false)} toast={toast} />}
@@ -175,6 +183,11 @@ export default function Dashboard({ onNav, toast, page }) {
 // ── Dashboard Home ─────────────────────────────────────────────
 function DashHome({ last20, totalIncome, totalExpense, balance, budget, budgetUsedPct, pieData, monthlyData, user, onAddTx, toast, loading }) {
     const recent5 = last20.slice(0, 5);
+    
+    const animBalance = useCountUp(balance);
+    const animIncome = useCountUp(totalIncome);
+    const animExpense = useCountUp(totalExpense);
+    const animPct = useCountUp(budgetUsedPct);
 
     return (
         <>
@@ -192,10 +205,10 @@ function DashHome({ last20, totalIncome, totalExpense, balance, budget, budgetUs
 
             <div className="stats-grid">
                 {[
-                    { label: "Total Balance", value: fmt(balance, user?.currency), change: "Net position", icon: <Wallet size={24} color={balance >= 0 ? C.success : C.danger} />, color: "#efe5fe", tc: balance >= 0 ? C.success : C.danger },
-                    { label: "Total Income", value: fmt(totalIncome, user?.currency), change: "This period", icon: <TrendingUp size={24} color={C.success} />, color: "#dcfce7", tc: C.success },
-                    { label: "Total Expenses", value: fmt(totalExpense, user?.currency), change: "This period", icon: <TrendingDown size={24} color={C.danger} />, color: "#fee2e2", tc: C.danger },
-                    { label: "Budget Used", value: `${budgetUsedPct}%`, change: `of ${fmt(budget, user?.currency)}`, icon: <Target size={24} color={budgetUsedPct >= 80 ? C.danger : C.success} />, color: "#fef3c7", tc: budgetUsedPct >= 80 ? C.danger : C.success },
+                    { label: "Total Balance", value: fmt(animBalance, user?.currency), change: "Net position", icon: <Wallet size={24} color={balance >= 0 ? C.success : C.danger} />, color: "#efe5fe", tc: balance >= 0 ? C.success : C.danger },
+                    { label: "Total Income", value: fmt(animIncome, user?.currency), change: "This period", icon: <TrendingUp size={24} color={C.success} />, color: "#dcfce7", tc: C.success },
+                    { label: "Total Expenses", value: fmt(animExpense, user?.currency), change: "This period", icon: <TrendingDown size={24} color={C.danger} />, color: "#fee2e2", tc: C.danger },
+                    { label: "Budget Used", value: `${animPct}%`, change: `of ${fmt(budget, user?.currency)}`, icon: <Target size={24} color={budgetUsedPct >= 80 ? C.danger : C.success} />, color: "#fef3c7", tc: budgetUsedPct >= 80 ? C.danger : C.success },
                 ].map(s => (
                     <div key={s.label} className="stat-card">
                         <div className="stat-icon" style={{ background: s.color }}>{s.icon}</div>
