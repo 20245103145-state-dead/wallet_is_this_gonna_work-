@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun, Menu, X } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Navbar({ currentPage, onNav, user }) {
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const { theme, toggleTheme } = useTheme();
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -11,13 +12,6 @@ export default function Navbar({ currentPage, onNav, user }) {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
-
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
-
-    const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
     return (
         <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>

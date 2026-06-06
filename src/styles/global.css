@@ -1294,7 +1294,7 @@ h5 {
 }
 
 .modal {
-  background: #fff;
+  background: var(--card);
   border-radius: 24px;
   padding: 2rem;
   width: 100%;
@@ -1355,14 +1355,14 @@ h5 {
 }
 
 .type-btn.active.income {
-  background: #fff;
-  color: #16a34a;
+  background: var(--card);
+  color: var(--success, #16a34a);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
 }
 
 .type-btn.active.expense {
-  background: #fff;
-  color: #ef4444;
+  background: var(--card);
+  color: var(--danger, #ef4444);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
 }
 
@@ -1410,12 +1410,12 @@ h5 {
   position: absolute;
   top: 54px;
   right: 1.5rem;
-  background: #fff;
+  background: var(--card);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(69, 41, 141, .15);
-  border: 1px solid rgba(69, 41, 141, .1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border);
   padding: .5rem;
-  min-width: 200px;
+  min-width: 210px;
   z-index: 300;
 }
 
@@ -1440,12 +1440,12 @@ h5 {
 }
 
 .profile-menu-item.danger:hover {
-  background: #fee2e2;
+  background: rgba(239, 68, 68, 0.15);
 }
 
 .profile-divider {
   height: 1px;
-  background: rgba(69, 41, 141, .08);
+  background: var(--border);
   margin: .35rem 0;
 }
 
@@ -1482,10 +1482,10 @@ h5 {
 }
 
 .filter-tab.active {
-  background: #fff;
+  background: var(--card);
   color: var(--primary);
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(69, 41, 141, .12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
 }
 
 /* ── CONTACT PAGE ── */

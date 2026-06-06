@@ -12,7 +12,9 @@ import {
     TrendingUp, 
     TrendingDown, 
     AlertTriangle,
-    Plus
+    Plus,
+    Moon,
+    Sun
 } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import { C, CAT_COLORS } from "../constants/colors";
@@ -22,6 +24,7 @@ import { CURRENCY_SYMBOLS } from "../utils/currency";
 import { useAuth } from "../context/AuthContext";
 import { useTransactions } from "../context/TransactionContext";
 import { useCountUp } from "../hooks/useCountUp";
+import { useTheme } from "../context/ThemeContext";
 
 import Sidebar from "../components/Sidebar";
 import AddTxModal from "../components/AddTransactionModal";
@@ -37,6 +40,7 @@ import AskAI from "./AskAI";
 export default function Dashboard({ onNav, toast, page }) {
     const { user, logout } = useAuth();
     const { transactions: allTxs, loading } = useTransactions();
+    const { theme, toggleTheme, isDark } = useTheme();
     const navigate = useNavigate();
     
     const [activeSection, setActiveSection] = useState(page || "dashboard");
@@ -150,6 +154,28 @@ export default function Dashboard({ onNav, toast, page }) {
                                     <div className="profile-menu-item" onClick={() => { setShowProfile(true); setProfileMenu(false); }}><User size={16} /> Edit Profile</div>
                                     <div className="profile-menu-item" onClick={() => navTo("budget")}><Wallet size={16} /> Budget Settings</div>
                                     <div className="profile-menu-item" onClick={() => navTo("analytics")}><LineChart size={16} /> Analytics</div>
+                                    <div className="profile-divider" />
+                                    {/* Theme toggle inline */}
+                                    <div className="profile-menu-item" onClick={toggleTheme} style={{ justifyContent: "space-between" }}>
+                                        <span style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
+                                            {isDark ? <Moon size={16} /> : <Sun size={16} />}
+                                            {isDark ? "Dark Mode" : "Light Mode"}
+                                        </span>
+                                        <span style={{
+                                            display: "inline-flex", width: 36, height: 20, borderRadius: 999,
+                                            background: isDark ? "var(--primary)" : "rgba(0,0,0,0.15)",
+                                            alignItems: "center", padding: "2px", transition: "background .3s",
+                                            flexShrink: 0,
+                                        }}>
+                                            <span style={{
+                                                width: 16, height: 16, borderRadius: "50%", background: "#fff",
+                                                marginLeft: isDark ? "auto" : 0,
+                                                transition: "margin .25s cubic-bezier(.4,0,.2,1)",
+                                                boxShadow: "0 1px 3px rgba(0,0,0,.3)",
+                                                display: "block",
+                                            }} />
+                                        </span>
+                                    </div>
                                     <div className="profile-divider" />
                                     <div className="profile-menu-item danger" onClick={handleLogout}><LogOut size={16} /> Sign Out</div>
                                 </div>
