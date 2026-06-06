@@ -56,7 +56,11 @@ export default function ProfileModal({ onClose, toast }) {
                         {["BDT", "USD", "EUR", "GBP", "AED", "INR"].map(c => <option key={c}>{c}</option>)}
                     </select>
                 </div>
-                <div style={{ borderTop: "1px solid rgba(69,41,141,.1)", paddingTop: "1rem", marginTop: ".5rem" }}>
+
+                {/* THEME TOGGLE */}
+                <ThemeToggleRow />
+
+                <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem", marginTop: ".5rem" }}>
                     <div style={{ fontSize: ".85rem", fontWeight: 600, color: C.text, marginBottom: ".75rem" }}>Change Password (optional)</div>
                     <div className="profile-modal-grid">
                         <div className="form-group">
@@ -71,6 +75,81 @@ export default function ProfileModal({ onClose, toast }) {
                 </div>
                 <button className="btn btn-primary btn-lg" style={{ width: "100%", justifyContent: "center" }} onClick={save}>Save Changes</button>
             </div>
+        </div>
+    );
+}
+
+function ThemeToggleRow() {
+    const [theme, setTheme] = useState(
+        () => localStorage.getItem("theme") || "light"
+    );
+
+    const toggle = () => {
+        const next = theme === "light" ? "dark" : "light";
+        setTheme(next);
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+    };
+
+    const isDark = theme === "dark";
+
+    return (
+        <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: ".9rem 1rem",
+            borderRadius: "14px",
+            background: "var(--light)",
+            marginBottom: "1rem",
+            border: "1px solid var(--border)",
+        }}>
+            <div style={{ display: "flex", alignItems: "center", gap: ".65rem" }}>
+                <span style={{ fontSize: "1.15rem" }}>{isDark ? "🌙" : "☀️"}</span>
+                <div>
+                    <div style={{ fontWeight: 600, fontSize: ".88rem", color: "var(--text)" }}>
+                        {isDark ? "Dark Mode" : "Light Mode"}
+                    </div>
+                    <div style={{ fontSize: ".75rem", color: "var(--muted)" }}>
+                        {isDark ? "Easy on the eyes at night" : "Clean and bright interface"}
+                    </div>
+                </div>
+            </div>
+
+            {/* Pill toggle switch */}
+            <button
+                onClick={toggle}
+                aria-label="Toggle theme"
+                style={{
+                    width: 52,
+                    height: 28,
+                    borderRadius: 999,
+                    border: "none",
+                    cursor: "pointer",
+                    background: isDark ? "var(--primary)" : "var(--border)",
+                    position: "relative",
+                    transition: "background .3s",
+                    flexShrink: 0,
+                    outline: "none",
+                    boxShadow: isDark ? "0 0 0 3px rgba(155,126,248,0.2)" : "none",
+                }}
+            >
+                <span style={{
+                    position: "absolute",
+                    top: 3,
+                    left: isDark ? 26 : 3,
+                    width: 22,
+                    height: 22,
+                    borderRadius: "50%",
+                    background: "#fff",
+                    transition: "left .25s cubic-bezier(.4,0,.2,1)",
+                    boxShadow: "0 1px 4px rgba(0,0,0,.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 12,
+                }} />
+            </button>
         </div>
     );
 }
