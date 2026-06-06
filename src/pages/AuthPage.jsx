@@ -71,7 +71,7 @@ export default function AuthPage({ mode, onNav, onLogin, toast }) {
             const { seedDemoData } = await import("../utils/seedData");
             const txSnap = await getDoc(doc(db, "users", firebaseUser.uid));
             const txQuery = await import("firebase/firestore").then(m =>
-                m.getDocs(m.query(m.collection(db, "transactions"), m.where("userId", "==", firebaseUser.uid)))
+                m.getDocs(m.collection(db, `users/${firebaseUser.uid}/transactions`))
             );
             if (txQuery.empty) {
                 const demoTxs = seedDemoData(firebaseUser.uid);
@@ -81,8 +81,8 @@ export default function AuthPage({ mode, onNav, onLogin, toast }) {
                     { userId: firebaseUser.uid, name: "Laptop Upgrade", target: 80000, current: 22000, color: "#7b5cbf" },
                 ];
                 await Promise.all([
-                    ...demoTxs.map(tx => addDoc(collection(db, "transactions"), tx)),
-                    ...demoGoals.map(g => addDoc(collection(db, "goals"), g)),
+                    ...demoTxs.map(tx => addDoc(collection(db, `users/${firebaseUser.uid}/transactions`), tx)),
+                    ...demoGoals.map(g => addDoc(collection(db, `users/${firebaseUser.uid}/goals`), g)),
                 ]);
             }
             toast(`Welcome to MyWallet! 🎉`, "success");
@@ -111,7 +111,7 @@ export default function AuthPage({ mode, onNav, onLogin, toast }) {
                 
                 // Seed demo transactions directly to Firestore
                 const demoTxs = seedDemoData(newUser.uid);
-                const txPromises = demoTxs.map(tx => addDoc(collection(db, "transactions"), tx));
+                const txPromises = demoTxs.map(tx => addDoc(collection(db, `users/${newUser.uid}/transactions`), tx));
                 
                 // Seed goals
                 const demoGoals = [
@@ -119,7 +119,7 @@ export default function AuthPage({ mode, onNav, onLogin, toast }) {
                     { userId: newUser.uid, name: "Eid Shopping", target: 15000, current: 8500, color: "#de98c9" },
                     { userId: newUser.uid, name: "Laptop Upgrade", target: 80000, current: 22000, color: "#7b5cbf" },
                 ];
-                const goalPromises = demoGoals.map(g => addDoc(collection(db, "goals"), g));
+                const goalPromises = demoGoals.map(g => addDoc(collection(db, `users/${newUser.uid}/goals`), g));
                 
                 await Promise.all([...txPromises, ...goalPromises]);
                 
